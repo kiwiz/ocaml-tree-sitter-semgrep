@@ -1,0 +1,10 @@
+# Sample large Swift projects
+
+https://github.com/Alamofire/Alamofire.git
+https://github.com/iina/iina.git
+https://github.com/danielgindi/Charts.git
+https://github.com/ReactiveX/RxSwift.git
+https://github.com/SwiftyJSON/SwiftyJSON.git
+https://github.com/vapor/vapor.git
+https://github.com/onevcat/Kingfisher.git
+https://github.com/Carthage/Carthage.git

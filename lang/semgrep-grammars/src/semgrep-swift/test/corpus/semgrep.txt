@@ -1,0 +1,145 @@
+=====================================
+Metavariables
+=====================================
+
+class $CLASS {
+  $FUNC($PARAM) {
+    if $PARAM == 1 {
+      $FUNC2();
+    }
+  }
+}
+
+---
+
+(compilation_unit
+  (class_declaration
+    (identifier)
+    (declaration_list
+      (method_declaration
+        (void_keyword)
+        (identifier)
+        (parameter_list (parameter (identifier) (identifier)))
+        (block
+          (expression_statement
+            (conditional_expression (identifier) (identifier) (identifier))
+          )
+        )
+      )
+    )
+  )
+)
+
+=====================================
+Ellipsis for expression
+=====================================
+
+class Example {
+  func init() {
+    let a: Int = ...;
+  }
+}
+
+---
+
+(source_file
+  (class_declaration (type_identifier) (class_body
+    (function_declaration (simple_identifier) (function_body
+      (statements (property_declaration
+        (value_binding_pattern (non_binding_pattern (simple_identifier)))
+        (type_annotation (user_type (type_identifier))) (semgrep_ellipsis))
+      )
+    ))
+  ))
+)
+
+=====================================
+Ellipsis for statements
+=====================================
+
+class Example {
+  func init() {
+    ...
+  }
+}
+
+---
+
+(source_file
+  (class_declaration (type_identifier) (class_body
+    (function_declaration (simple_identifier) (function_body (statements
+      (property_declaration (value_binding_pattern (non_binding_pattern (simple_identifier))) (type_annotation (user_type (type_identifier)))
+      (open_end_range_expression (integer_literal)))
+    )))
+  ))
+)
+
+
+=====================================
+Deep expression ellipsis
+=====================================
+
+class Foo {
+  func init() {
+    let a: Int = <... 0 ...>
+  }
+}
+
+---
+
+(source_file
+  (class_declaration (identifier) (declaration_list (type_identifier) (class_body
+    (function_declaration (simple_identifier) (function_body (statements
+      (property_declaration (value_binding_pattern (non_binding_pattern (simple_identifier))) (type_annotation (user_type (type_identifier))))
+
+=====================================
+Argument ellipsis
+=====================================
+
+foo(...)
+
+---
+
+(source_file
+  (call_expression (simple_identifier)
+    (call_suffix (value_arguments (value_argument (semgrep_ellipsis))))
+  )
+)
+
+=====================================
+Parameter ellipsis in method definition
+=====================================
+
+class Example {
+  func init(num: Int, ...) {
+  }
+}
+
+---
+
+(source_file
+  (class_declaration (type_identifier)
+    (class_body
+      (function_declaration (simple_identifier)
+        (parameter (simple_identifier) (user_type (type_identifier)))
+        (semgrep_ellipsis)
+      (function_body))
+    )
+  )
+)
+
+=====================================
+Ellipsis in class declaration
+=====================================
+
+class A {
+  ...
+}
+
+---
+
+(source_file
+  (class_declaration (type_identifier)
+    (class_body (semgrep_ellipsis))
+  )
+)
